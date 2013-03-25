@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja" manifest="site.appcache">
+<!-- http://yonows.web.fc2.com/countmoji/ -->
+<head>
+	<meta charset="UTF-8" />
+	<title>countMOJI | 文字数カウンタ</title>
+	<link rel="apple-touch-icon-precomposed" href="./apple-touch-icon-precomposed.png"/>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="js/jquery-1.6.4.min.js"></script>
+	<script src="js/jquery.mobile-1.0rc1.min.js"></script>
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-39465005-1', 'fc2.com');
+	ga('send', 'pageview');
+	</script>
+
+	<script type="text/javascript">
+	function saveText(hash){
+		localStorage.setItem(hash, $('textarea#memo').val());
+	}
+
+	function countText(){
+		var thisValueLength = $('textarea#memo').val().length;
+		var thisValueLengthNoNLSP = $('textarea#memo').val().replace(/\s|/gm,'').length;
+		$('.count').html(thisValueLengthNoNLSP+"文字" + '<br>'
+			// + thisValueLengthNoSP+"文字(スペース含む)" + '<br>'
+			+ thisValueLength+"文字(改行・スペース含む)");
+	}
+
+	$(document).ready(function(){
+		var body = localStorage.getItem("memo");
+		if(body != null){
+			$('textarea#memo').val(body);
+		}
+		countText(body);
+
+		$('textarea#memo').bind('keydown keyup keypress change', function(){
+			countText();
+			saveText("memo");
+		});
+
+		$("input#clear:button").click(function(){
+			saveText("beforememo");
+			$('textarea#memo').val('');
+			countText();
+			saveText("memo");
+		});
+
+		$("input#return:button").click(function(){
+			var body = localStorage.getItem("beforememo");
+			saveText("beforememo");
+			if(body != null){
+				$('textarea#memo').val(body);
+			}
+			countText();
+		});
+	});
+
+	</script>
+</head>
+
+<body>
+	<!--///////トップページ///////-->
+	<div data-role="page" id="top">
+		<div id="header" data-role="header" class="toppage">
+			<!-- <a href="http://thisistestpage.site44.com/countmoji/"></a> -->
+			<h1>countMOJI</h1>
+			<p>文字数カウンタ</p>
+		</div>
+
+		<div data-role="content">
+			<!-- <p class="count"></p> -->
+			<textarea id="memo" placeholder="テキストを入力してください。"></textarea>
+			<p class="count"></p>
+			<input id="clear" type="button" value="クリア" />
+			<input id="return" type="button" value="戻す" />
+
+		</div>
+
+		<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-3518313162149167";
+		/* foriphone */
+		google_ad_slot = "7557764836";
+		google_ad_width = 320;
+		google_ad_height = 50;
+//-->
+</script>
+
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+<div id="footer" data-role="footer">
+	<p>copyright &copy; 2013 yonows All Right Reserved.</p>
+</div>
+
+</div>
+</body>
+</html>
